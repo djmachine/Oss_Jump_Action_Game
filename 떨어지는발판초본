@@ -1,0 +1,48 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class fallingplaform : MonoBehaviour
+{
+    float falltime = 0.5f, returntime = 0.7f;
+    Rigidbody2D rb;
+    Vector2 startPos;
+    bool isback;
+    // Start is called before the first frame update
+    void Start()
+    {
+        rb= GetComponent<Rigidbody2D>();
+        startPos= transform.position;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(isback)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, startPos, 20 * Time.deltaTime);
+        }
+        if (transform.position.y == startPos.y)
+        {
+            isback = false;
+        }
+    }
+    void OnCollision2D(Collision2D col)
+    {
+        if (col.gameObject.name == "Player" && !isback)
+        {
+            Invoke("FallPlatform", falltime);
+        }
+    }
+    void FallPlatform()
+    {
+        rb.isKinematic = false;
+        Invoke("BackPlatform", returntime);
+    }
+    void BackPlatform()
+    {
+        rb.velocity = Vector2.zero;
+        rb.isKinematic = true;
+        isback = true;
+    }
+}

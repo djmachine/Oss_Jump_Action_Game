@@ -1,0 +1,45 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
+
+public class push : MonoBehaviour
+{
+    public float delta = 0.1f;
+
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        float newXPosition = transform.localPosition.x + delta;
+       transform.localPosition = new Vector2(newXPosition, transform.localPosition.y);
+
+
+
+        if (transform.localPosition.x < -30)
+        {
+            //delta = 0.1f;
+             newXPosition= transform.localPosition.x + 30;
+             transform.localPosition = new Vector2(newXPosition, transform.localPosition.y);
+        }
+
+
+        void OnCollisionEnter2D(Collision2D Circle)//공과 장애물 충돌
+        {
+            Debug.Log(Circle.gameObject.name + "충돌");
+
+            Vector2 direction = transform.position - Circle.gameObject.transform.position;
+
+            direction = direction.normalized * 1000;
+
+            Circle.gameObject.GetComponent<Rigidbody2D>().AddForce(direction); 
+        }
+        ;
+    }
+}
+
+      

@@ -1,0 +1,26 @@
+RankNameCurrent.text = PlayerPrefs.GetString("CurrentPlayerName");
+RankScoreCurrent.text = string.Format("{0:N3}", Playerprefs.GetFloat("CurrentPlayerScore"));
+
+for(int i = 0; i < 5; i++)
+{
+    rankScore[i] = Playerprefs.GetFloat(i + "BestScore");
+    RankScoreText[i].text = string.Format("{0:N3}", rankScore[i]);
+    rankName[i] = PlayerPrefs.GetString(i.ToString() + "BestName");
+    RankNameText[i].text = string.Format(rankName[i]);
+    //1위 노란색으로 표시
+    if(RankScoreCurrent.text == RankScoreText[i].text)
+    {
+        Color Rank = new Color(255, 225, 0);
+        RankText[i].color = Rank;
+        RankNameText[i].color = Rank;
+        RankScoreText[i].color = Rank;
+    }
+}
+
+if(PlayerPrefs.GetFloat("CurrentPlayerScore") == rankScore[i])
+{
+    Color Rank = new Color(255, 225, 0);
+    RankText[i].color = Rank;
+    RankNameText[i].color = Rank;
+    RankScoreText[i].color = Rank;
+}

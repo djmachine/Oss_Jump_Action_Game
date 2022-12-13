@@ -1,0 +1,81 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.Tilemaps;
+
+public class Professor : MonoBehaviour
+{
+    public float Speed;
+    public float Upspeed;
+    public float max;
+    public float maxrange;
+    private float a = 0;
+    private float zerox;
+    private float zeroy;
+    private float firstspeed;
+
+    TilemapCollider2D collider;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        zerox = transform.localPosition.x;
+        zeroy = transform.localPosition.y;
+        firstspeed = Speed;
+        collider = GetComponent<TilemapCollider2D>();
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player" && collision.transform.localPosition.y > transform.localPosition.y)
+        {
+            a = Upspeed;
+        }
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        float r = Speed + transform.localPosition.x;
+        float r2 = a + transform.localPosition.y;
+        if (transform.localPosition.x == zerox && transform.localPosition.y == zeroy)
+        {
+            collider.enabled = true;
+        }
+        if (a > 0)
+        {
+            Speed = 0;
+        }
+        transform.localPosition = new Vector2(r, r2);
+        if (transform.localPosition.y > max)
+        {
+            a = 0;
+        }
+        if (Speed == 0 && a == 0)
+        {
+            Invoke("breakplaform", 5f);
+        }
+        if (Speed > 0)
+        {
+            if (transform.localPosition.x > maxrange)
+            {
+                Invoke("breakplaform", 5f);
+            }
+        }
+        else if (Speed < 0)
+        {
+            if (transform.localPosition.x < maxrange)
+            {
+                Invoke("breakplaform", 5f);
+            }
+        }
+    }
+    void breakplaform()
+    {
+        collider.enabled = false;
+        Speed = firstspeed;
+        transform.localPosition = new Vector2(zerox, zeroy);
+        a = 0;
+    }
+}
